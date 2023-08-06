@@ -3,13 +3,14 @@ package com.group.libraryapp.domain.user;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "user_loan_history")
 public class UserLoanHistory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "user_id")
     @ManyToOne
     private User user;
 
