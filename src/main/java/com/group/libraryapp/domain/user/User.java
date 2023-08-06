@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "users")
 public class User {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 

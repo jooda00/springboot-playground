@@ -3,11 +3,11 @@ package com.group.libraryapp.domain.user;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_loan_history")
 public class UserLoanHistory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_loan_history_id")
     private Long id;
 
     @JoinColumn(name = "user_id")
