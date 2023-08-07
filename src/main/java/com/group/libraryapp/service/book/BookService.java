@@ -1,18 +1,25 @@
 package com.group.libraryapp.service.book;
 
 import com.group.libraryapp.domain.book.Book;
+import com.group.libraryapp.domain.review.Review;
 import com.group.libraryapp.domain.user.User;
-import com.group.libraryapp.domain.user.UserLoanHistory;
 import com.group.libraryapp.dto.book.request.BookCreateRequest;
 import com.group.libraryapp.dto.book.request.BookLoanRequest;
 import com.group.libraryapp.dto.book.request.BookReturnRequest;
+import com.group.libraryapp.dto.book.response.BookResponse;
+import com.group.libraryapp.dto.book.response.BookWithReviewsResponse;
+import com.group.libraryapp.dto.review.response.ReviewResponse;
 import com.group.libraryapp.repository.book.BookRepository;
 import com.group.libraryapp.repository.user.UserLoanHistoryRepository;
 import com.group.libraryapp.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
+@Transactional(readOnly = true)
 public class BookService {
 
     private final BookRepository bookRepository;
@@ -66,5 +73,30 @@ public class BookService {
         }
         // 책 찾고, 반납
         user.returnBook(book.getName());
+    }
+
+    public List<BookResponse> getBooks() {
+        List<Book> books = bookRepository.findAll();
+        return books.stream().map(BookResponse::new).collect(Collectors.toList());
+    }
+
+
+    public BookWithReviewsResponse getBookWithReviews(Long bookId) {
+        // 책 찾기
+        Book book = bookRepository.findBookWithReviewsById(bookId).orElseThrow(
+                () -> {
+                    throw new IllegalArgumentException("책이 없습니다.");
+                }
+        );
+        // 리뷰 찾기
+        List<Review> reviews = book.getReviews();
+        // 리뷰 dto 형식으로 바꾸기
+        List<ReviewResponse> reviewResponses = reviews.stream().map(
+                review -> {
+                    return new ReviewResponse(review.getId(), review.getContent());
+                }
+        ).collect(Collectors.toList());
+        // 책 반환해주기
+        return new BookWithReviewsResponse(book, reviewResponses);
     }
 }
