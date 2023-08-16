@@ -11,9 +11,11 @@ import lombok.RequiredArgsConstructor;
 public class BookResponse {
     private Long id;
     private String name;
+    private String introduction;
 
     public BookResponse(Book book) {
         this.id = book.getId();
         this.name = book.getName();
+        this.introduction = book.getIntroduction();
     }
 }
