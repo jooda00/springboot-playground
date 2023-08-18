@@ -9,7 +9,6 @@ import java.util.List;
 
 @Entity
 public class Book {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id")
@@ -24,6 +23,8 @@ public class Book {
     // 지연 로딩
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
+
+    private int heartCount;
 
     protected Book() {}
 
@@ -44,6 +45,19 @@ public class Book {
         return reviews;
     }
 
+    public int getHeartCount() {
+        return heartCount;
+    }
+
     public String getIntroduction() { return this.introduction;}
 
+    public void addHeartCount() {
+        this.heartCount += 1;
+    }
+
+    public void removeHeartCount() {
+        if (this.heartCount > 0) {
+            this.heartCount -= 1;
+        }
+    }
 }

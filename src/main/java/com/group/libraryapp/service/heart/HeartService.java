@@ -43,8 +43,10 @@ public class HeartService {
         // 좋아요 누르고 -> 취소한 상태이면
         else if (heart != null && !heart.isHeart()) {
             heart.pushHeart();
+            book.addHeartCount();
             return;
         }
+        book.addHeartCount();
         heartRepository.save(new Heart(user, book));
     }
 
@@ -57,6 +59,7 @@ public class HeartService {
                 () -> {throw new IllegalArgumentException("해당 책이 존재하지 않습니다.");}
         );
         Heart heart = heartRepository.findByUserAndBook(user, book);
+        book.removeHeartCount();
         heart.returnHeart();
     }
 }

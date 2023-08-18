@@ -80,7 +80,6 @@ public class BookService {
         return books.stream().map(BookResponse::new).collect(Collectors.toList());
     }
 
-
     public BookWithReviewsResponse getBookWithReviews(Long bookId) {
         // 책 찾기
         Book book = bookRepository.findBookWithReviewsById(bookId).orElseThrow(
